@@ -12,7 +12,7 @@ export default function CreateInvoice() {
     let {id, setId, listData, setListData} = useListData()
     const [total, setTotal] = useState(0);
     const [invoice_id, setInvoice_id] = useState("");
-    const [status, setStatus] = useState("");
+    const [status, setStatus] = useState("paid");
     const [created_on, setCreated_on] = useState("");
     const [due_on, setDue_on] = useState("");
     const [address_from, setAddress_from] = useState("");
@@ -115,6 +115,17 @@ export default function CreateInvoice() {
     }
     const handleSave = () => {
         
+        if (due_on === "" || created_on === "" || invoice_id === "" || status === "" || address_from === "" ||items.length === 0) {
+            enqueueSnackbar("Please fill all the fields", {
+                variant: "error",
+                anchorOrigin: {
+                    vertical: "top",
+                    horizontal: "right",
+                },
+                autoHideDuration: 1500,
+            });
+            return;
+        }
         let data = 
             {
         "id": id,
@@ -177,7 +188,7 @@ export default function CreateInvoice() {
 
                         <div className="flex flex-col justify-stretch items-start">
                             <label className="text-gray-300 text-md px-2 pb-1">Invoice Status :</label>
-                            <select className="bg-zinc-800 text-white p-2 rounded-lg w-11/12" value={status} onChange={(e) => { setStatus(e.target.value) }}>
+                            <select className="bg-zinc-800 text-white p-2 rounded-lg w-11/12" value={status} onChange={(e) => { setStatus(e.target.value) }} placeholder="Select Status">
                             <option value="paid">Paid</option>
                             <option value="pending">Pending</option>
                             <option value="overdue">Overdue</option>
